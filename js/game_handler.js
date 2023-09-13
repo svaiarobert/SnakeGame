@@ -4,19 +4,14 @@ class Game{
     static isRunning = false;
     static snake;
 
-    static #createSnakeHead(){
-        const head = new SnakePart(0, {x:1, y:3});
-        $(".playground").append('<div #id="part-0" class="snake-part snake-head" style="grid-row:1; grid-column:3"></div>');
-        Game.snake.parts.push(head);
-        return head;
-
-    }
-
-    static #createSnakePart(position){
+    static #createSnakePart(position, isHead = false){
         const counter = Game.snake.parts.length;
-        const part = new SnakePart(counter, {x: position.x, y: position.y});
-        $(".playground").append(`<div #id='part-${counter}' class="snake-part" style="grid-row:${position.x}; grid-column:${position.y}"></div>`);
+        const part = new SnakePart(counter, {row: position.row, col: position.col});
+
         Game.snake.parts.push(part);
+        if ( isHead )
+            Game.snake.head = part;
+        
         return part;
     }
 
@@ -27,9 +22,10 @@ class Game{
         //init snake parts and snake
         Game.snake = new Snake({}, []);
 
-        Game.#createSnakePart({ x:1, y:1 });
-        Game.#createSnakePart({ x:1, y:2 });
-        Game.#createSnakeHead();
+        Game.#createSnakePart({ row:1, col:3 }, true);  //head
+        Game.#createSnakePart({ row:1, col:2 });
+        Game.#createSnakePart({ row:1, col:1 });
+        
     }
 
     static start(){   
@@ -45,11 +41,33 @@ class Game{
 
 //Keyboard Event Handler
 $(document).on('keypress',function(event) {
-    if(event.which == 13) {         //Enter
-        if( !Game.isRunning ){
-            Game.initialize();
-            Game.start();
-            console.log(Game.snake);
-        }  
+    switch( event.which ){
+        case( 13 ):             //Enter
+            if( !Game.isRunning ){
+                Game.initialize();
+                Game.start();
+                console.log(Game.snake);
+            } 
+        break;            
     }
 });
+
+$('html').on('keydown',function(event) {
+    switch( event.which ){
+        case( LEFT ):
+            Game.snake.head.move(LEFT);
+            break;
+        case( UP ):
+            console.log('right');
+            Game.snake.head.move(UP);
+            break;
+        case( RIGHT ):
+            console.log('right');
+            Game.snake.head.move(RIGHT);
+            break;
+        case( DOWN ):
+            console.log('right');
+            Game.snake.head.move(DOWN);
+            break;
+    }
+})
