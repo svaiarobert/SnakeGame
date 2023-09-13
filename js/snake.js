@@ -52,6 +52,18 @@ class SnakePart{
         }
             
     }
+
+    moveAtPosition(position){
+        this.position.row = position.row;
+        this.position.col = position.col;
+
+        $(`#part-${this.counter}`).css({
+            'grid-row-start': this.position.row.toString(), 
+            'grid-row-end': this.position.row.toString(), 
+            'grid-column-start': this.position.col.toString(),
+            'grid-column-end': this.position.col.toString()});
+
+    }
 }
 
 class Snake{
@@ -61,8 +73,53 @@ class Snake{
         this.direction = RIGHT; 
     }
 
+    createSnakePart(position, isHead = false){
+        const counter = this.parts.length;
+        const part = new SnakePart(counter, {row: position.row, col: position.col});
+
+        this.parts.push(part);
+        if ( isHead )
+            this.head = part;
+        
+        return part;
+    }
+
+    #isCrashing(){
+        switch( this.direction ){
+            case( LEFT ):
+                if( this.head.position.col <= 0 )
+                    return true;
+                break;
+            case( UP ):
+                if( this.head.position.row <= 0 )
+                    return true;
+                break;
+            case( RIGHT ):
+                if( this.head.position.col >= 16 )
+                    return true;
+                break;
+            case( DOWN ):
+                if( this.head.position.row >= 16 )
+                    return true;
+                break;
+        }
+
+        return false;
+    }
+
     move(){
-        for(let i=0; i<this.parts.length; i++)
-            this.parts[i].move(this.direction);
+        let tempPosition1 = {row: this.head.position.row, col:this.head.position.col}, tempPosition2;
+        this.head.move(this.direction);
+
+        for(let i=1; i<this.parts.length; i++)
+        {
+            tempPosition2 = {row: this.parts[i].position.row, col: this.parts[i].position.col};
+            this.parts[i].moveAtPosition(tempPosition1)
+            tempPosition1 = tempPosition2;
+        }
+
+        if( this.#isCrashing() )
+            return -1;
+            
     }
 }

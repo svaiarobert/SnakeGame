@@ -4,39 +4,33 @@ class Game{
     static isRunning = false;
     static snake;
 
-    static #createSnakePart(position, isHead = false){
-        const counter = Game.snake.parts.length;
-        const part = new SnakePart(counter, {row: position.row, col: position.col});
-
-        Game.snake.parts.push(part);
-        if ( isHead )
-            Game.snake.head = part;
-        
-        return part;
-    }
-
     static initialize(){
         //delete existing divs from last game
         $(".playground > div").remove();
+        $(".game-over").hide();
 
         //init snake parts and snake
         Game.snake = new Snake({}, []);
 
-        Game.#createSnakePart({ row:1, col:3 }, true);  //head
-        Game.#createSnakePart({ row:1, col:2 });
-        Game.#createSnakePart({ row:1, col:1 });
+        Game.snake.createSnakePart({ row:1, col:3 }, true);  //head
+        Game.snake.createSnakePart({ row:1, col:2 });
+        Game.snake.createSnakePart({ row:1, col:1 });
         
     }
 
     static start(){   
+        Game.isRunning = true;
         $(".enter-to-start").hide();
         setInterval(() => {
-            this.snake.move();
-        }, 900)
+            if( Game.isRunning )
+                if (this.snake.move() == -1) //GameOver
+                    Game.end();
+        }, 300)
     }
 
     static end(){
         $(".game-over").show();
+        Game.isRunning = false;
     }
 
 }
