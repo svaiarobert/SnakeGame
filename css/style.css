@@ -4,18 +4,6 @@
     font-family:  'ArcadeClassic', sans-serif !important;
 }
 
-.enter-to-start{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.enter-to-start p{
-    font-size: 3rem;
-    text-shadow: 2px 2px grey;
-}
-
 .main-container{
     display: flex;
     justify-content: center;
@@ -48,6 +36,27 @@
     margin: 0;
 }
 
+.enter-to-start, .game-over{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.game-over{
+    display: none;
+}
+
+.enter-to-start p, .game-over p{
+    font-size: 3rem;
+    text-shadow: 3px 3px grey;
+}
+
+.game-over p{
+    color: red;
+}
+
+
 .score-container, .score{
     color: green;
     font-size: 2rem;
@@ -59,7 +68,7 @@
     border: 5px solid black;
     height: 675px;
     width: 675px;
-    background-color: rgb(247, 244, 244);
+    background-color: rgb(249, 245, 245);
 
     display: grid;
     grid-template-columns: repeat(15, 45px [col-start]);
