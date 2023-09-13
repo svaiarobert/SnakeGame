@@ -30,6 +30,9 @@ class Game{
 
     static start(){   
         $(".enter-to-start").hide();
+        setInterval(() => {
+            this.snake.move();
+        }, 900)
     }
 
     static end(){
@@ -55,19 +58,16 @@ $(document).on('keypress',function(event) {
 $('html').on('keydown',function(event) {
     switch( event.which ){
         case( LEFT ):
-            Game.snake.head.move(LEFT);
+            Game.snake.direction = LEFT;
             break;
         case( UP ):
-            console.log('right');
-            Game.snake.head.move(UP);
+            Game.snake.direction = UP;
             break;
         case( RIGHT ):
-            console.log('right');
-            Game.snake.head.move(RIGHT);
+            Game.snake.direction = RIGHT;
             break;
         case( DOWN ):
-            console.log('right');
-            Game.snake.head.move(DOWN);
+            Game.snake.direction = DOWN;
             break;
     }
 })

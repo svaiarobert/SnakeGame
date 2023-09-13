@@ -55,8 +55,14 @@ class SnakePart{
 }
 
 class Snake{
-    constructor(head, parts){
+    constructor(head, parts, direction = RIGHT){
         this.head = head;   //SnakePart
-        this.parts = parts; //aray of SnakeParts 
+        this.parts = parts; //aray of SnakeParts
+        this.direction = RIGHT; 
+    }
+
+    move(){
+        for(let i=0; i<this.parts.length; i++)
+            this.parts[i].move(this.direction);
     }
 }
