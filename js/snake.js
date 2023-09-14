@@ -1,4 +1,5 @@
 const LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40;
+const START_DIRECTION = RIGHT;
 
 class SnakePart{
     constructor(counter, position){
@@ -70,10 +71,11 @@ class Snake{
     constructor(head, parts, direction = RIGHT){
         this.head = head;   //SnakePart
         this.parts = parts; //aray of SnakeParts
-        this.direction = RIGHT; 
+        this.tailLastPos = null;
+        this.direction = START_DIRECTION; 
     }
 
-    createSnakePart(position, isHead = false){
+    initiateSnakePart(position, isHead = false){
         const counter = this.parts.length;
         const part = new SnakePart(counter, {row: position.row, col: position.col});
 
@@ -82,6 +84,14 @@ class Snake{
             this.head = part;
         
         return part;
+    }
+
+    createSnakePart(){
+        const newPart = new SnakePart(this.parts.length, this.tailLastPos);
+        this.parts.push(newPart);
+
+        return newPart;
+
     }
 
     #isCrashing(){
@@ -112,11 +122,16 @@ class Snake{
         this.head.move(this.direction);
 
         for(let i=1; i<this.parts.length; i++)
-        {
+        {   
+            if( i == this.parts.length - 1 ) //tails
+                this.tailLastPos = {row: this.parts[i].position.row, col: this.parts[i].position.col};
+
             tempPosition2 = {row: this.parts[i].position.row, col: this.parts[i].position.col};
             this.parts[i].moveAtPosition(tempPosition1)
             tempPosition1 = tempPosition2;
         }
+
+        
 
         if( this.#isCrashing() )
             return -1;
