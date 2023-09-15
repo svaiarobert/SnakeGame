@@ -28,7 +28,6 @@ class Game{
         
         Game.currentApple = new Apple(Game.#generateApplePosition(allowedPositions));
     }
-
     
     static initialize(){
         //delete existing divs from last game
@@ -71,6 +70,11 @@ class Game{
         $(".game-over").show();
         Game.isRunning = false;
         clearInterval(Game.#intervalId);
+    }
+
+    static increaseScore(){
+        Game.score++;
+        $('.score').text(Game.score.toString());
     }
 
 }

@@ -129,7 +129,12 @@ class Snake{
 
     #handleEatingApple(){
         if(this.head.position.row === Game.currentApple.position.row && this.head.position.col === Game.currentApple.position.col)
-            console.log('EATS APPLe');
+        {
+            this.createSnakePart();
+            Game.increaseScore();
+            Game.generateApple();
+        }
+            
     }
 
     move(){
