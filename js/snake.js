@@ -95,6 +95,10 @@ class Snake{
     }
 
     #isCrashing(){
+        const partsPositions = [];
+        for(let i=0; i<this.parts.length; i++)
+            partsPositions.push(this.parts[i].position);
+
         switch( this.direction ){
             case( LEFT ):
                 if( this.head.position.col <= 0 )
@@ -114,7 +118,18 @@ class Snake{
                 break;
         }
 
+        for( let i=1; i<this.parts.length; i++) //snake eats himself
+            if( this.head.position.row === this.parts[i].position.row && this.head.position.col === this.parts[i].position.col )
+                return true;
+
+
+
         return false;
+    }
+
+    #handleEatingApple(){
+        if(this.head.position.row === Game.currentApple.position.row && this.head.position.col === Game.currentApple.position.col)
+            console.log('EATS APPLe');
     }
 
     move(){
@@ -135,6 +150,23 @@ class Snake{
 
         if( this.#isCrashing() )
             return -1;
+
+        this.#handleEatingApple();
             
+    }
+}
+
+class Apple{
+    constructor(position){
+        this.position = position;
+
+        $(".playground").append(`<div class="apple"></div>`);
+
+        $(`.apple`).css({
+            'grid-row-start': position.row.toString(), 
+            'grid-row-end': position.row.toString(), 
+            'grid-column-start': position.col.toString(),
+            'grid-column-end': position.col.toString(),
+        });
     }
 }

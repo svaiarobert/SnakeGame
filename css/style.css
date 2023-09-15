@@ -89,3 +89,8 @@
 .snake-head{
     background-color: green;
 }
+
+.apple{
+    background-color: red;
+    border-radius: 50% !important;
+}
