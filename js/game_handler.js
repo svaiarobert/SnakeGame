@@ -7,6 +7,8 @@ class Game{
     static currentApple;
     static #TABLE_SIZE = 15;
     static #MAP = new Map();
+    static #CURRENT_SPEED = 300;
+    static #SPEED_DIFFERENCE = 50;
 
     static #generateApplePosition(allowedPositions){
         const generatePositionKey = Array.from(allowedPositions)[Math.floor(Math.random() * Array.from(allowedPositions).length)];
@@ -33,6 +35,7 @@ class Game{
         //delete existing divs from last game
         $(".playground > div").remove();
         $(".game-over").hide();
+        Game.restartScore();
 
         //initialize Map
         let c = 0;
@@ -63,11 +66,14 @@ class Game{
                     Game.end();
             else
                 return -1;
-        }, 300);
+        }, Game.#CURRENT_SPEED);
     }
 
     static end(){
         $(".game-over").show();
+        $('.playground > div').addClass('game-over-part');
+        const audio = new Audio('./../sounds/game-over-arcade.mp3');
+        audio.play();
         Game.isRunning = false;
         clearInterval(Game.#intervalId);
     }
@@ -75,6 +81,46 @@ class Game{
     static increaseScore(){
         Game.score++;
         $('.score').text(Game.score.toString());
+    }
+
+    static restartScore(){
+        Game.score = 0;
+        $('.score').text(Game.score.toString());
+    }
+
+    static increaseSpeed(){
+
+        if(Game.#CURRENT_SPEED >= 100)
+        {
+            clearInterval(Game.#intervalId);
+            Game.#CURRENT_SPEED -= Game.#SPEED_DIFFERENCE;
+            Game.#intervalId = setInterval(() => {
+            if( Game.isRunning )
+                if (this.snake.move() == -1) //GameOver
+                    Game.end();
+            else
+                return -1;
+        }, Game.#CURRENT_SPEED);
+        }
+        console.log('Speed: ', Game.#CURRENT_SPEED);
+        
+    }
+
+    static decreaseSpeed(){
+
+        if(Game.#CURRENT_SPEED <= 500)
+        {
+            clearInterval(Game.#intervalId);
+            Game.#CURRENT_SPEED += Game.#SPEED_DIFFERENCE;
+            Game.#intervalId = setInterval(() => {
+            if( Game.isRunning )
+                if (this.snake.move() == -1) //GameOver
+                    Game.end();
+            else
+                return -1;
+        }, Game.#CURRENT_SPEED);
+        }
+        console.log('Speed: ', Game.#CURRENT_SPEED);
     }
 
 }
@@ -89,9 +135,15 @@ $(document).on('keypress',function(event) {
                 Game.start();
                 console.log(Game.snake);
             } 
-        break;   
+            break;   
         
-        case(65):   //a for debug
+        case( 43 ): //+
+        console.log('+ preseed');
+            Game.increaseSpeed();
+            break;
+        case( 45 ): //-
+            Game.decreaseSpeed();
+            break;
             
     }
 });
@@ -118,5 +170,6 @@ $('html').on('keydown',function(event) {
             console.log('a pressed');
             Game.snake.createSnakePart();
             break;
+        
     }
 })

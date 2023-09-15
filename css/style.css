@@ -56,11 +56,30 @@
     color: red;
 }
 
+.game-over-part{
+    opacity: calc(0.5);
+}
 
 .score-container, .score{
     color: green;
     font-size: 2rem;
 
+}
+
+.highscores{
+    position: absolute; 
+  left: 50%; 
+  right: 50%;  
+    top: 50%;
+    border:2px solid black;
+}
+
+.highscores > h2{
+    font-size: 2rem;
+}
+
+.highscores li{
+    font-size: 1.5rem;
 }
 
 .playground{
@@ -94,3 +113,4 @@
     background-color: red;
     border-radius: 50% !important;
 }
+

@@ -133,6 +133,9 @@ class Snake{
             this.createSnakePart();
             Game.increaseScore();
             Game.generateApple();
+            const audio = new Audio('./../sounds/eat-apple.wav');
+            audio.volume = 0.8;
+            audio.play();
         }
             
     }
