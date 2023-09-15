@@ -7,7 +7,7 @@ class Game{
     static currentApple;
     static #TABLE_SIZE = 15;
     static #MAP = new Map();
-    static #CURRENT_SPEED = 300;
+    static #CURRENT_SPEED = 150;
     static #SPEED_DIFFERENCE = 50;
 
     static #generateApplePosition(allowedPositions){
